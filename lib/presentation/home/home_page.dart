@@ -4,6 +4,8 @@ import 'package:dactylo/presentation/home/widgets/touch_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../data/datasources/clavier_data_sources.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
@@ -15,76 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isShiftPressed = false;
   bool isCapsLockActive = false;
   
-  List<List<ToucheEntity>> keyboard = [
-    [
-      ToucheEntity(premiereCaractere: "`", deuxiemeCaractere: "~"),
-      ToucheEntity(premiereCaractere: "1", deuxiemeCaractere: "!"),
-      ToucheEntity(premiereCaractere: "2", deuxiemeCaractere: "@"),
-      ToucheEntity(premiereCaractere: "3", deuxiemeCaractere: "#"),
-      ToucheEntity(premiereCaractere: "4", deuxiemeCaractere: "\$"),
-      ToucheEntity(premiereCaractere: "5", deuxiemeCaractere: "%"),
-      ToucheEntity(premiereCaractere: "6", deuxiemeCaractere: "^"),
-      ToucheEntity(premiereCaractere: "7", deuxiemeCaractere: "&"),
-      ToucheEntity(premiereCaractere: "8", deuxiemeCaractere: "*"),
-      ToucheEntity(premiereCaractere: "9", deuxiemeCaractere: "("),
-      ToucheEntity(premiereCaractere: "0", deuxiemeCaractere: ")"),
-      ToucheEntity(premiereCaractere: "-", deuxiemeCaractere: "_"),
-      ToucheEntity(premiereCaractere: "=", deuxiemeCaractere: "+"),
-      ToucheEntity(premiereCaractere: "⌫", deuxiemeCaractere: "Backspace", width: 135),
-    ],
-    [
-      ToucheEntity(premiereCaractere: "Tab", width: 112),
-      ToucheEntity(premiereCaractere: "q", deuxiemeCaractere: "Q"),
-      ToucheEntity(premiereCaractere: "w", deuxiemeCaractere: "W"),
-      ToucheEntity(premiereCaractere: "e", deuxiemeCaractere: "E"),
-      ToucheEntity(premiereCaractere: "r", deuxiemeCaractere: "R"),
-      ToucheEntity(premiereCaractere: "t", deuxiemeCaractere: "T"),
-      ToucheEntity(premiereCaractere: "y", deuxiemeCaractere: "Y"),
-      ToucheEntity(premiereCaractere: "u", deuxiemeCaractere: "U"),
-      ToucheEntity(premiereCaractere: "i", deuxiemeCaractere: "I"),
-      ToucheEntity(premiereCaractere: "o", deuxiemeCaractere: "O"),
-      ToucheEntity(premiereCaractere: "p", deuxiemeCaractere: "P"),
-      ToucheEntity(premiereCaractere: "[", deuxiemeCaractere: "{"),
-      ToucheEntity(premiereCaractere: "]", deuxiemeCaractere: "}"),
-      ToucheEntity(premiereCaractere: "\\", deuxiemeCaractere: "|", width: 112),
-    ],
-    [
-      ToucheEntity(premiereCaractere: "Caps", width: 160),
-      ToucheEntity(premiereCaractere: "a", deuxiemeCaractere: "A"),
-      ToucheEntity(premiereCaractere: "s", deuxiemeCaractere: "S"),
-      ToucheEntity(premiereCaractere: "d", deuxiemeCaractere: "D"),
-      ToucheEntity(premiereCaractere: "f", deuxiemeCaractere: "F"),
-      ToucheEntity(premiereCaractere: "g", deuxiemeCaractere: "G"),
-      ToucheEntity(premiereCaractere: "h", deuxiemeCaractere: "H"),
-      ToucheEntity(premiereCaractere: "j", deuxiemeCaractere: "J"),
-      ToucheEntity(premiereCaractere: "k", deuxiemeCaractere: "K"),
-      ToucheEntity(premiereCaractere: "l", deuxiemeCaractere: "L"),
-      ToucheEntity(premiereCaractere: ";", deuxiemeCaractere: ":"),
-      ToucheEntity(premiereCaractere: "'", deuxiemeCaractere: "\""),
-      ToucheEntity(premiereCaractere: "Enter", width: 160),
-    ],
-    [
-      ToucheEntity(premiereCaractere: "Shift", width: 208),
-      ToucheEntity(premiereCaractere: "z", deuxiemeCaractere: "Z"),
-      ToucheEntity(premiereCaractere: "x", deuxiemeCaractere: "X"),
-      ToucheEntity(premiereCaractere: "c", deuxiemeCaractere: "C"),
-      ToucheEntity(premiereCaractere: "v", deuxiemeCaractere: "V"),
-      ToucheEntity(premiereCaractere: "b", deuxiemeCaractere: "B"),
-      ToucheEntity(premiereCaractere: "n", deuxiemeCaractere: "N"),
-      ToucheEntity(premiereCaractere: "m", deuxiemeCaractere: "M"),
-      ToucheEntity(premiereCaractere: ",", deuxiemeCaractere: "<"),
-      ToucheEntity(premiereCaractere: ".", deuxiemeCaractere: ">"),
-      ToucheEntity(premiereCaractere: "/", deuxiemeCaractere: "?"),
-      ToucheEntity(premiereCaractere: "Shift", width: 208),
-    ],
-    [
-      ToucheEntity(premiereCaractere: "Ctrl", width: 165),
-      ToucheEntity(premiereCaractere: "Alt", width: 130),
-      ToucheEntity(premiereCaractere: "Space", width: 750),
-      ToucheEntity(premiereCaractere: "Alt", width: 130),
-      ToucheEntity(premiereCaractere: "Ctrl", width: 165),
-    ],
-  ];
+ 
 
   final FocusNode _focusNode = FocusNode();
   String typedText = '';
