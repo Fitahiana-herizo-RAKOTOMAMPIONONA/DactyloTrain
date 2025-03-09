@@ -1,8 +1,17 @@
+import 'package:dactylo/presentation/home/provider/clavier_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:dactylo/presentation/home/home_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ClavierProvider())
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
