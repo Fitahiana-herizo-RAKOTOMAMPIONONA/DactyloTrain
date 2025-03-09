@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ],
     // Deuxième rangée - QWERTY
     [
-      ToucheEntity(premiereCaractere: "Tab", width: 135),
+      ToucheEntity(premiereCaractere: "Tab", width: 112),
       ToucheEntity(premiereCaractere: "q", deuxiemeCaractere: "Q"),
       ToucheEntity(premiereCaractere: "w", deuxiemeCaractere: "W"),
       ToucheEntity(premiereCaractere: "e", deuxiemeCaractere: "E"),
@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ToucheEntity(premiereCaractere: "p", deuxiemeCaractere: "P"),
       ToucheEntity(premiereCaractere: "[", deuxiemeCaractere: "{"),
       ToucheEntity(premiereCaractere: "]", deuxiemeCaractere: "}"),
-      ToucheEntity(premiereCaractere: "\\", deuxiemeCaractere: "|", width: 135),
+      ToucheEntity(premiereCaractere: "\\", deuxiemeCaractere: "|", width: 112),
     ],
     // Troisième rangée - ASDFGHJKL
     [
@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ],
     // Quatrième rangée - ZXCVBNM
     [
-      ToucheEntity(premiereCaractere: "Shift", width: 200),
+      ToucheEntity(premiereCaractere: "Shift", width: 208),
       ToucheEntity(premiereCaractere: "z", deuxiemeCaractere: "Z"),
       ToucheEntity(premiereCaractere: "x", deuxiemeCaractere: "X"),
       ToucheEntity(premiereCaractere: "c", deuxiemeCaractere: "C"),
@@ -78,15 +78,15 @@ class _MyHomePageState extends State<MyHomePage> {
       ToucheEntity(premiereCaractere: ",", deuxiemeCaractere: "<"),
       ToucheEntity(premiereCaractere: ".", deuxiemeCaractere: ">"),
       ToucheEntity(premiereCaractere: "/", deuxiemeCaractere: "?"),
-      ToucheEntity(premiereCaractere: "Shift", width: 200),
+      ToucheEntity(premiereCaractere: "Shift", width: 208),
     ],
     // Cinquième rangée - barre d'espace et touches spéciales
     [
-      ToucheEntity(premiereCaractere: "Ctrl", width: 120),
-      ToucheEntity(premiereCaractere: "Alt", width: 120),
-      ToucheEntity(premiereCaractere: "Space", width: 450),
-      ToucheEntity(premiereCaractere: "Alt", width: 120),
-      ToucheEntity(premiereCaractere: "Ctrl", width: 120),
+      ToucheEntity(premiereCaractere: "Ctrl", width: 165),
+      ToucheEntity(premiereCaractere: "Alt", width: 130),
+      ToucheEntity(premiereCaractere: "Space", width: 750),
+      ToucheEntity(premiereCaractere: "Alt", width: 130),
+      ToucheEntity(premiereCaractere: "Ctrl", width: 165),
     ],
   ];
 
