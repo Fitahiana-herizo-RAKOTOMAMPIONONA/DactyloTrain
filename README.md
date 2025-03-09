@@ -48,13 +48,6 @@ Cette application est conçue pour aider les utilisateurs à améliorer leur vit
    flutter run
    ```
 
-##  Utilisation
-
-1. **Lancer l'application**
-2. **Sélectionner un mode d'entraînement**
-3. **Commencer à taper et suivre votre progression**
-4. **Analyser vos performances grâce aux statistiques**
-
 ##  Contribution
 
 Les contributions sont les bienvenues ! Pour contribuer :
