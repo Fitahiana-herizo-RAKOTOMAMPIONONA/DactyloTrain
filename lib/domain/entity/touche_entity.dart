@@ -1,11 +1,15 @@
 class ToucheEntity {
   final String premiereCaractere;
   final String? deuxiemeCaractere;
-  bool isPressed;
+  final double width;
+  bool isPressed = false;
+  bool isActive = false;
 
   ToucheEntity({
-    required this.premiereCaractere, 
+    required this.premiereCaractere,
     this.deuxiemeCaractere,
-    this.isPressed = false
+    this.width = 90,
+    this.isPressed = false,
+    this.isActive = false,
   });
 }

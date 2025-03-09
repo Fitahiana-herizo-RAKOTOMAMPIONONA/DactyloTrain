@@ -4,55 +4,63 @@ import 'package:flutter/material.dart';
 class Touche extends StatelessWidget {
   final ToucheEntity touche;
 
-  const Touche({
-    super.key, 
-    required this.touche,
-  });
+  const Touche({super.key, required this.touche});
 
   @override
   Widget build(BuildContext context) {
+    // Couleurs en fonction de l'état de la touche
+    Color backgroundColor;
+    Color textColor;
+    
+    if (touche.isPressed) {
+      backgroundColor = Colors.blue.shade700; // Bleu plus foncé quand pressé
+      textColor = Colors.white;
+    } else if (touche.isActive) {
+      backgroundColor = Colors.blue.shade500; // Bleu quand actif (ex: Caps Lock)
+      textColor = Colors.white;
+    } else {
+      backgroundColor = Colors.grey.shade800; // Gris foncé par défaut
+      textColor = Colors.white;
+    }
+
     return Container(
-      padding: const EdgeInsets.all(4),
-      height: 70,
-      width: 70,
-      margin: const EdgeInsets.all(4),
+      margin: const EdgeInsets.all(2),
+      width: touche.width,
+      height: 90,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(5)),
-        color: touche.isPressed ? Colors.blue.shade700 : Colors.black45,
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(5),
         boxShadow: [
           BoxShadow(
-            color: touche.isPressed ? Colors.blue.shade200 : Colors.transparent,
-            blurRadius: 4,
+            color: Colors.black.withOpacity(0.2),
             spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      child: Stack(
-        children: [
-          Align(
-            alignment: const Alignment(0, 0),
-            child: Text(
-              touche.premiereCaractere,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: touche.isPressed ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ),
-          if (touche.deuxiemeCaractere != null)
-            Positioned(
-              top: 5,
-              right: 5,
-              child: Text(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (touche.deuxiemeCaractere != null && touche.premiereCaractere.length == 1)
+              Text(
                 touche.deuxiemeCaractere!,
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 12,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: textColor.withOpacity(0.8),
                 ),
               ),
+            Text(
+              touche.premiereCaractere,
+              style: TextStyle(
+                fontSize: touche.premiereCaractere.length == 1 ? 20 : 14,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }
