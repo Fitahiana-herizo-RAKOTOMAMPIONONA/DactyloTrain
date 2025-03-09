@@ -1,4 +1,5 @@
 import 'package:dactylo/domain/entity/touche_entity.dart';
+import 'package:dactylo/presentation/home/widgets/champt_text_widget.dart';
 import 'package:dactylo/presentation/home/widgets/touch_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +16,6 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isCapsLockActive = false;
   
   List<List<ToucheEntity>> keyboard = [
-    // Première rangée - nombres
     [
       ToucheEntity(premiereCaractere: "`", deuxiemeCaractere: "~"),
       ToucheEntity(premiereCaractere: "1", deuxiemeCaractere: "!"),
@@ -32,7 +32,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ToucheEntity(premiereCaractere: "=", deuxiemeCaractere: "+"),
       ToucheEntity(premiereCaractere: "⌫", deuxiemeCaractere: "Backspace", width: 135),
     ],
-    // Deuxième rangée - QWERTY
     [
       ToucheEntity(premiereCaractere: "Tab", width: 112),
       ToucheEntity(premiereCaractere: "q", deuxiemeCaractere: "Q"),
@@ -49,7 +48,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ToucheEntity(premiereCaractere: "]", deuxiemeCaractere: "}"),
       ToucheEntity(premiereCaractere: "\\", deuxiemeCaractere: "|", width: 112),
     ],
-    // Troisième rangée - ASDFGHJKL
     [
       ToucheEntity(premiereCaractere: "Caps", width: 160),
       ToucheEntity(premiereCaractere: "a", deuxiemeCaractere: "A"),
@@ -65,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ToucheEntity(premiereCaractere: "'", deuxiemeCaractere: "\""),
       ToucheEntity(premiereCaractere: "Enter", width: 160),
     ],
-    // Quatrième rangée - ZXCVBNM
     [
       ToucheEntity(premiereCaractere: "Shift", width: 208),
       ToucheEntity(premiereCaractere: "z", deuxiemeCaractere: "Z"),
@@ -80,7 +77,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ToucheEntity(premiereCaractere: "/", deuxiemeCaractere: "?"),
       ToucheEntity(premiereCaractere: "Shift", width: 208),
     ],
-    // Cinquième rangée - barre d'espace et touches spéciales
     [
       ToucheEntity(premiereCaractere: "Ctrl", width: 165),
       ToucheEntity(premiereCaractere: "Alt", width: 130),
@@ -128,14 +124,12 @@ class _MyHomePageState extends State<MyHomePage> {
       
       for (var row in keyboard) {
         for (var touche in row) {
-          // Vérifier les deux caractères possibles de la touche
           if (touche.premiereCaractere.toLowerCase() == key.toLowerCase() || 
               (touche.deuxiemeCaractere != null && touche.deuxiemeCaractere!.toLowerCase() == key.toLowerCase())) {
             touche.isPressed = true;
             keyFound = true;
           }
-          
-          // Traitement spécial pour les touches spéciales
+        
           if (key == "Shift" && touche.premiereCaractere == "Shift") {
             touche.isPressed = true;
             isShiftPressed = true;
@@ -185,14 +179,12 @@ class _MyHomePageState extends State<MyHomePage> {
       
       for (var row in keyboard) {
         for (var touche in row) {
-          // Vérifier les deux caractères possibles de la touche
           if (touche.premiereCaractere.toLowerCase() == key.toLowerCase() || 
               (touche.deuxiemeCaractere != null && touche.deuxiemeCaractere!.toLowerCase() == key.toLowerCase())) {
             touche.isPressed = false;
             keyFound = true;
           }
           
-          // Traitement spécial pour les touches spéciales
           if (key == "Shift" && touche.premiereCaractere == "Shift") {
             touche.isPressed = false;
             isShiftPressed = false;
@@ -223,7 +215,6 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       }
       
-      // Si la touche n'a pas été trouvée, on peut essayer de réinitialiser le caractère spécial
       if (!keyFound && key.length == 1) {
         for (var row in keyboard) {
           for (var touche in row) {
@@ -275,7 +266,6 @@ class _MyHomePageState extends State<MyHomePage> {
       if (keyPressed != null) {
         _markKeyPressed(keyPressed);
         
-        // Mise à jour du texte saisi
         setState(() {
           if (keyPressed == "Space") {
             typedText += " ";
@@ -288,7 +278,6 @@ class _MyHomePageState extends State<MyHomePage> {
               typedText = typedText.substring(0, typedText.length - 1);
             }
           } else if (keyPressed?.length == 1) {
-            // Gestion des majuscules en fonction de Caps Lock et Shift
             if (isShiftPressed || isCapsLockActive) {
               if (isShiftPressed && keyPressed!.length == 1) {
                 // Rechercher le caractère secondaire si disponible
@@ -296,7 +285,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 if (secondaryChar != null) {
                   typedText += secondaryChar;
                 } else if (isCapsLockActive && !isShiftPressed) {
-                  // Caps Lock activé mais pas Shift - majuscules pour les lettres seulement
                   if (_isLetter(keyPressed)) {
                     typedText += keyPressed.toUpperCase();
                   } else {
@@ -322,15 +310,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               }
             } else {
-              // Ni Caps Lock ni Shift activés
               typedText += keyPressed!;
             }
           }
         });
         
-        // Ne pas automatiquement relâcher les touches de modification (Shift, Ctrl, Alt)
         if (keyPressed != "Shift" && keyPressed != "Ctrl" && keyPressed != "Alt" && keyPressed != "Caps") {
-          // Relâcher la touche après un court délai
           Future.delayed(const Duration(milliseconds: 150), () {
             if (mounted) {
               setState(() {
@@ -379,42 +364,19 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
+      // ignore: deprecated_member_use
       body: RawKeyboardListener(
         focusNode: _focusNode,
         onKey: _handleKeyEvent,
         child: GestureDetector(
           onTap: () {
-            // Assurer que le focus est maintenu pour capturer les événements du clavier
             FocusScope.of(context).requestFocus(_focusNode);
           },
           child: Container(
             color: Colors.grey[900],
             child: Column(
               children: [
-                // Zone d'affichage pour le texte saisi
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    margin: const EdgeInsets.all(16),
-                    padding: const EdgeInsets.all(16),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Text(
-                        typedText,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                
-                // Zone du clavier
+                ChamptTextWidget(typedText: typedText) ,
                 Expanded(
                   flex: 3,
                   child: Center(

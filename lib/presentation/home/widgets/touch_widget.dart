@@ -1,3 +1,4 @@
+import 'package:dactylo/core%20/%20constant/colors.dart';
 import 'package:dactylo/domain/entity/touche_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -8,19 +9,18 @@ class Touche extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Couleurs en fonction de l'état de la touche
     Color backgroundColor;
     Color textColor;
     
     if (touche.isPressed) {
-      backgroundColor = Colors.blue.shade700; // Bleu plus foncé quand pressé
-      textColor = Colors.white;
+      backgroundColor = AppColors.secondaryColor; 
+      textColor = AppColors.thirdColor;
     } else if (touche.isActive) {
-      backgroundColor = Colors.blue.shade500; // Bleu quand actif (ex: Caps Lock)
-      textColor = Colors.white;
+      backgroundColor = AppColors.secondaryColor;
+      textColor = AppColors.thirdColor;
     } else {
-      backgroundColor = Colors.grey.shade800; // Gris foncé par défaut
-      textColor = Colors.white;
+      backgroundColor = AppColors.primarycolor;
+      textColor = AppColors.thirdColor;
     }
 
     return Container(
