@@ -16,7 +16,7 @@ Cette application est conçue pour aider les utilisateurs à améliorer leur vit
 
 - **Flutter** : Développement multi-plateforme
 - **Dart** : Langage principal
-- **Linux** : OS cible
+- **Linux**  et **Windows**: OS cible
 - **Provider** : Gestion d'état
 - **Flutter RawKeyboardListener** : Capture des événements clavier
 
