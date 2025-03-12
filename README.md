@@ -8,9 +8,11 @@ Cette application est conçue pour aider les utilisateurs à améliorer leur vit
 
 ## Les fonctionnalités
 
-✅ Clavier virtuel interactif
+✅ Clavier virtuel interactif - QWERTY
 ✅ Détection en temps réel des touches pressées
 ✅ Interface moderne et ergonomique
+✅ vitesse en WPM
+✅ precision de l'utilisateur 
 
 ## 🛠️ Technologies utilisées
 
