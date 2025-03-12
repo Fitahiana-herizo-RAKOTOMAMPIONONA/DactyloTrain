@@ -1,13 +1,23 @@
-import 'package:dactylo/presentation/home/provider/clavier_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:dactylo/presentation/home/home_page.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' show Platform;
+import 'package:window_size/window_size.dart';
+
+import 'presentation/home/home_page.dart';
+import 'presentation/home/provider/clavier_provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+ 
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    setWindowMinSize(const Size(1450, 1000));
+    setWindowTitle('Dactylo Training');
+  }
+
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ClavierProvider())
+        ChangeNotifierProvider(create: (_) => ClavierProvider()),
       ],
       child: const MyApp(),
     ),
@@ -20,7 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dactylo training',
+      title: 'Dactylo Training',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,

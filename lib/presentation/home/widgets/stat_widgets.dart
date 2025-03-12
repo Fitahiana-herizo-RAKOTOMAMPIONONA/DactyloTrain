@@ -90,6 +90,22 @@ class TypeTestStatsWidget extends StatelessWidget {
                   ),
                 ],
               ),
+              Column(
+                children: [
+                  const Text(
+                    'caracteres',
+                    style: TextStyle(color: Colors.white70, fontSize: 12),
+                  ),
+                  Text(
+                    provider.totalCharactersTyped.toString(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
               
               provider.isTestActive 
                 ? ElevatedButton(

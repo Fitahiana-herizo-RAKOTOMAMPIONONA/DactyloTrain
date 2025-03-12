@@ -8,33 +8,33 @@ class ClavierProvider extends ChangeNotifier {
   bool isShiftPressed = false;
   bool isCapsLockActive = false;
   String typedText = "";
-  String practiceText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac diam lectus.";
+  String practiceText = '''Lorem ipsum odor amet, consectetuer adipiscing elit. Nullam in class class rhoncus vel pretium. Feugiat hendrerit tempus viverra hendrerit primis lacus blandit potenti. Urna purus ultricies ridiculus metus bibendum tincidunt? Elementum primis conubia consequat tristique cubilia purus gravida turpis. Cursus amet laoreet elementum blandit sagittis. Quis lacinia iaculis etiam mauris amet magnis bibendum viverra. Senectus etiam cursus justo; morbi velit vitae. Dictum suscipit hac tellus laoreet augue molestie nullam auctor senectus.
+Feugiat egestas posuere fermentum sollicitudin laoreet ut. Vel curae lacinia laoreet ligula mauris torquent. Ridiculus nullam pellentesque egestas tortor sagittis euismod cras ex. Nascetur ligula integer urna semper justo penatibus fringilla. Tristique vivamus penatibus nisl efficitur parturient nullam ornare tempor. Euismod augue magna quam faucibus quis etiam. Eleifend ipsum vehicula commodo suspendisse feugiat. Sagittis aenean maecenas vulputate maecenas rhoncus sociosqu enim.
+Laoreet cursus magnis suscipit tristique cubilia posuere parturient placerat. Pretium pharetra scelerisque posuere et arcu. Est massa hendrerit montes laoreet dolor tristique. Taciti eget quis ex nec orci duis faucibus tempus. Dictum sed neque lacinia fringilla; sed non. Eu venenatis efficitur fringilla elementum ridiculus donec malesuada vestibulum. Gravida curabitur netus aliquet leo vivamus. Montes lorem montes leo justo arcu; netus enim. Urna nisl eleifend risus aptent venenatis vel quam ipsum proin.
+Augue orci non amet conubia nisi. Rutrum congue pellentesque praesent sagittis pulvinar augue felis conubia natoque. Senectus eros fames vestibulum; cursus sollicitudin id? Dignissim mi parturient habitant duis proin fames fermentum urna. Quisque tempus metus; dignissim congue habitant aptent. Ut scelerisque senectus velit tempus convallis.
+Gravida ullamcorper id senectus in erat urna sapien ut. Risus taciti accumsan suscipit purus orci magna suscipit cursus. Duis sit rutrum taciti magnis conubia nam habitasse ultrices. Etiam vulputate euismod purus nisl placerat enim. Class tempus tempor sem non elementum at magnis dis in. Praesent morbi in pellentesque, habitant consequat enim duis pretium curabitur. Augue fusce consequat curae, molestie donec a pharetra augue in.''';
   
-  // Timer related variables
-  final int testDurationInSeconds = 180; // 3 minutes
-  int remainingTimeInSeconds = 180;
+
+  final int testDurationInSeconds = 60;
+  int remainingTimeInSeconds = 60;
   Timer? _timer;
   bool isTestActive = false;
   
-  // Statistics
-  int totalKeyPresses = 0;  // Total des frappes (y compris backspace)
-  int errorKeyPresses = 0;  // Total des erreurs commises
-  int currentErrors = 0;    // Erreurs dans le texte actuel
-  double accuracy = 100.0;  // Pourcentage de précision
-  double wpm = 0.0;         // Mots par minute
+  int totalKeyPresses = 0;  
+  int errorKeyPresses = 0; 
+  int currentErrors = 0;   
+  double accuracy = 100.0; 
+  double wpm = 0.0;       
   int totalCharactersTyped = 0;
   
-  // Historique de frappe pour suivre les erreurs même après correction
   List<bool> keyPressHistory = [];
   
-  // Add a method to set a new practice text
   void setPracticeText(String text) {
     practiceText = text;
     resetTest();
     notifyListeners();
   }
   
-  // Start the timer for the typing test
   void startTest() {
     if (_timer != null) {
       _timer!.cancel();
@@ -46,7 +46,6 @@ class ClavierProvider extends ChangeNotifier {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       remainingTimeInSeconds--;
       
-      // Update WPM calculation every second
       _calculateWPM();
       
       if (remainingTimeInSeconds <= 0) {
@@ -59,7 +58,6 @@ class ClavierProvider extends ChangeNotifier {
     notifyListeners();
   }
   
-  // End the typing test
   void endTest() {
     isTestActive = false;
     if (_timer != null) {
@@ -67,13 +65,11 @@ class ClavierProvider extends ChangeNotifier {
       _timer = null;
     }
     
-    // Final calculation of statistics
     _calculateStatistics();
     
     notifyListeners();
   }
   
-  // Reset the test
   void resetTest() {
     if (_timer != null) {
       _timer!.cancel();
@@ -94,15 +90,11 @@ class ClavierProvider extends ChangeNotifier {
     notifyListeners();
   }
   
-  // Calculate words per minute
   void _calculateWPM() {
-    // Standard calculation: 5 characters = 1 word (including spaces)
-    // WPM = (Characters typed / 5) / (time elapsed in minutes)
     int elapsedTimeInSeconds = testDurationInSeconds - remainingTimeInSeconds;
     double elapsedTimeInMinutes = elapsedTimeInSeconds / 60;
     
     if (elapsedTimeInMinutes > 0) {
-      // Count correctly typed characters only
       int correctChars = 0;
       for (int i = 0; i < typedText.length && i < practiceText.length; i++) {
         if (typedText[i] == practiceText[i]) {
@@ -116,9 +108,7 @@ class ClavierProvider extends ChangeNotifier {
     }
   }
   
-  // Calculate accuracy and error statistics
   void _calculateStatistics() {
-    // Update current errors in the text
     currentErrors = 0;
     for (int i = 0; i < typedText.length && i < practiceText.length; i++) {
       if (typedText[i] != practiceText[i]) {
@@ -128,7 +118,6 @@ class ClavierProvider extends ChangeNotifier {
     
     totalCharactersTyped = typedText.length;
     
-    // Calculate accuracy based on total key presses history
     if (totalKeyPresses > 0) {
       accuracy = ((totalKeyPresses - errorKeyPresses) / totalKeyPresses) * 100;
     } else {
@@ -221,7 +210,6 @@ class ClavierProvider extends ChangeNotifier {
 
       if (keyPressed != null) {
         markKeyPressed(keyPressed);
-        // Start the test on first keypress if not already started
         if (!isTestActive && 
             keyPressed != "Shift" && 
             keyPressed != "Ctrl" && 
@@ -231,17 +219,14 @@ class ClavierProvider extends ChangeNotifier {
         }
         
         if (isTestActive) {
-          // Ne pas compter les modificateurs dans les statistiques
           if (keyPressed != "Shift" && 
               keyPressed != "Ctrl" && 
               keyPressed != "Alt" && 
               keyPressed != "Caps") {
             
-            // Vérifier si c'est une erreur avant de modifier le texte
             bool isError = false;
             
             if (keyPressed == "⌫") {
-              // On ne compte pas le backspace comme une erreur
               if (typedText.isNotEmpty) {
                 typedText = typedText.substring(0, typedText.length - 1);
               }
@@ -252,25 +237,20 @@ class ClavierProvider extends ChangeNotifier {
               else if (keyPressed == "Tab") newChar = "\t";
               else if (keyPressed.length == 1) newChar = keyPressed;
               
-              // Vérifier si la frappe est correcte par rapport au texte à recopier
               if (newChar.isNotEmpty && typedText.length < practiceText.length) {
                 isError = (newChar != practiceText[typedText.length]);
                 typedText += newChar;
               }
               
-              // Incrémenter le compteur de frappe
               totalKeyPresses++;
               
-              // Enregistrer si c'était une erreur
               keyPressHistory.add(!isError);
               
-              // Mettre à jour le compteur d'erreurs si nécessaire
               if (isError) {
                 errorKeyPresses++;
               }
             }
             
-            // Update statistics as user types
             _calculateStatistics();
           }
         }

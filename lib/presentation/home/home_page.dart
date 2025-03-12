@@ -75,37 +75,37 @@ class _MyHomePageState extends State<MyHomePage> {
                       typedText: clavierController.typedText,
                       practiceText: clavierController.practiceText,
                     ),
-                    if (!clavierController.isTestActive && clavierController.remainingTimeInSeconds < clavierController.testDurationInSeconds)
-                      Container(
-                        margin: const EdgeInsets.all(16),
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[800],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          children: [
-                            const Text(
-                              'Résultats du test',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                _buildResultItem('WPM', clavierController.wpm.toStringAsFixed(1)),
-                                _buildResultItem('Précision', '${clavierController.accuracy.toStringAsFixed(1)}%'),
-                                _buildResultItem('Erreurs', clavierController.errorKeyPresses.toString()),
-                                _buildResultItem('Caractères', clavierController.totalCharactersTyped.toString()),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                    // if (!clavierController.isTestActive && clavierController.remainingTimeInSeconds < clavierController.testDurationInSeconds)
+                    //   Container(
+                    //     margin: const EdgeInsets.all(16),
+                    //     padding: const EdgeInsets.all(16),
+                    //     decoration: BoxDecoration(
+                    //       color: Colors.grey[800],
+                    //       borderRadius: BorderRadius.circular(8),
+                    //     ),
+                    //     child: Column(
+                    //       children: [
+                    //         const Text(
+                    //           'Résultats du test',
+                    //           style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontSize: 20,
+                    //             fontWeight: FontWeight.bold,
+                    //           ),
+                    //         ),
+                    //         const SizedBox(height: 16),
+                    //         Row(
+                    //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    //           children: [
+                    //             _buildResultItem('WPM', clavierController.wpm.toStringAsFixed(1)),
+                    //             _buildResultItem('Précision', '${clavierController.accuracy.toStringAsFixed(1)}%'),
+                    //             _buildResultItem('Erreurs', clavierController.errorKeyPresses.toString()),
+                    //             _buildResultItem('Caractères', clavierController.totalCharactersTyped.toString()),
+                    //           ],
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
                     Expanded(
                       flex: 3,
                       child: Center(
