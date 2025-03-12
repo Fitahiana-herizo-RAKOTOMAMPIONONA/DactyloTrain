@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 
 class ChamptTextWidget extends StatefulWidget {
   final String typedText;
-  const ChamptTextWidget({super.key, required this.typedText});
+  final String practiceText;
+  
+  const ChamptTextWidget({
+    super.key, 
+    required this.typedText,
+    required this.practiceText,
+  });
 
   @override
   State<ChamptTextWidget> createState() => _ChamptTextWidgetState();
@@ -10,6 +16,7 @@ class ChamptTextWidget extends StatefulWidget {
 
 class _ChamptTextWidgetState extends State<ChamptTextWidget> {
   String get typedText => widget.typedText;
+  String get practiceText => widget.practiceText;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +31,40 @@ class _ChamptTextWidgetState extends State<ChamptTextWidget> {
           borderRadius: BorderRadius.circular(8),
         ),
         child: SingleChildScrollView(
-          child: Text(
-            typedText,
-            style: const TextStyle(color: Colors.white, fontSize: 18),
+          child: RichText(
+            text: TextSpan(
+              children: _buildTextSpans(),
+              style: const TextStyle(fontSize: 25),
+            ),
           ),
         ),
       ),
     );
+  }
+
+  List<TextSpan> _buildTextSpans() {
+    List<TextSpan> spans = [];
+    
+    for (int i = 0; i < practiceText.length; i++) {
+      Color charColor;
+      
+      if (i < typedText.length) {
+        // User has typed this character
+        if (typedText[i] == practiceText[i]) {
+          charColor = Colors.green; // Correct typing
+        } else {
+          charColor = Colors.red; // Mistake
+        }
+      } else {
+        charColor = Colors.grey; // Not typed yet
+      }
+      
+      spans.add(TextSpan(
+        text: practiceText[i],
+        style: TextStyle(color: charColor),
+      ));
+    }
+    
+    return spans;
   }
 }

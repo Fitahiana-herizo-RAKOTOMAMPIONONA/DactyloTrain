@@ -7,6 +7,14 @@ class ClavierProvider extends ChangeNotifier {
   bool isShiftPressed = false;
   bool isCapsLockActive = false;
   String typedText = "";
+  String practiceText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac diam lectus.";
+  
+  // Add a method to set a new practice text
+  void setPracticeText(String text) {
+    practiceText = text;
+    typedText = ""; // Reset typed text when changing practice text
+    notifyListeners();
+  }
 
   void toggleCapsLock() {
     isCapsLockActive = !isCapsLockActive;
@@ -108,5 +116,4 @@ class ClavierProvider extends ChangeNotifier {
       else if (event.logicalKey == LogicalKeyboardKey.alt) resetKey("Alt");
     }
   }
-
 }
