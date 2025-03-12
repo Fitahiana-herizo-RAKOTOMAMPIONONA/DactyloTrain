@@ -56,7 +56,8 @@ Les contributions sont les bienvenues ! Pour contribuer :
 3. Commitez vos modifications (`git commit -m 'Ajout d'une nouvelle fonctionnalité'`)
 4. Poussez votre branche (`git push origin feature-nouvelle-fonctionnalite`)
 5. Ouvrez une Pull Request
-
+ajouter une timer 3min pour tester et compter les erreur pour avoir une pourcentage de precision et words par minute
+une fenetre 
 ## 📄 Licence
 
 Ce projet est sous licence **MIT**. Consultez le fichier [LICENSE](LICENSE) pour plus de détails.
