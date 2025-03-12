@@ -7,7 +7,7 @@ class ClavierProvider extends ChangeNotifier {
   bool isShiftPressed = false;
   bool isCapsLockActive = false;
   String typedText = "";
-  String practiceText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac diam lectus.";
+  String practiceText = "Lorem ipsum odor amet, consectetuer adipiscing elit. Neque semper tortor blandit sem facilisi odio sodales. Convallis feugiat suspendisse parturient euismod ultrices. Metus habitant leo maximus, ut nostra aptent etiam magnis. Mus natoque posuere proin magna blandit lectus sit mattis potenti. Iaculis massa netus vivamus porta tortor elit hac nascetur tempus. Sagittis sed donec pellentesque platea tempus aliquet quisque diam. Torquent feugiat sem massa dui neque faucibus. Lacinia sem facilisis interdum amet viverra et.";
   
   // Add a method to set a new practice text
   void setPracticeText(String text) {
