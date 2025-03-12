@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,13 +8,132 @@ class ClavierProvider extends ChangeNotifier {
   bool isShiftPressed = false;
   bool isCapsLockActive = false;
   String typedText = "";
-  String practiceText = "Lorem ipsum odor amet, consectetuer adipiscing elit. Neque semper tortor blandit sem facilisi odio sodales. Convallis feugiat suspendisse parturient euismod ultrices. Metus habitant leo maximus, ut nostra aptent etiam magnis. Mus natoque posuere proin magna blandit lectus sit mattis potenti. Iaculis massa netus vivamus porta tortor elit hac nascetur tempus. Sagittis sed donec pellentesque platea tempus aliquet quisque diam. Torquent feugiat sem massa dui neque faucibus. Lacinia sem facilisis interdum amet viverra et.";
+  String practiceText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac diam lectus.";
+  
+  // Timer related variables
+  final int testDurationInSeconds = 180; // 3 minutes
+  int remainingTimeInSeconds = 180;
+  Timer? _timer;
+  bool isTestActive = false;
+  
+  // Statistics
+  int totalKeyPresses = 0;  // Total des frappes (y compris backspace)
+  int errorKeyPresses = 0;  // Total des erreurs commises
+  int currentErrors = 0;    // Erreurs dans le texte actuel
+  double accuracy = 100.0;  // Pourcentage de précision
+  double wpm = 0.0;         // Mots par minute
+  int totalCharactersTyped = 0;
+  
+  // Historique de frappe pour suivre les erreurs même après correction
+  List<bool> keyPressHistory = [];
   
   // Add a method to set a new practice text
   void setPracticeText(String text) {
     practiceText = text;
-    typedText = ""; // Reset typed text when changing practice text
+    resetTest();
     notifyListeners();
+  }
+  
+  // Start the timer for the typing test
+  void startTest() {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+    
+    resetTest();
+    isTestActive = true;
+    
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      remainingTimeInSeconds--;
+      
+      // Update WPM calculation every second
+      _calculateWPM();
+      
+      if (remainingTimeInSeconds <= 0) {
+        endTest();
+      }
+      
+      notifyListeners();
+    });
+    
+    notifyListeners();
+  }
+  
+  // End the typing test
+  void endTest() {
+    isTestActive = false;
+    if (_timer != null) {
+      _timer!.cancel();
+      _timer = null;
+    }
+    
+    // Final calculation of statistics
+    _calculateStatistics();
+    
+    notifyListeners();
+  }
+  
+  // Reset the test
+  void resetTest() {
+    if (_timer != null) {
+      _timer!.cancel();
+      _timer = null;
+    }
+    
+    typedText = "";
+    remainingTimeInSeconds = testDurationInSeconds;
+    isTestActive = false;
+    totalKeyPresses = 0;
+    errorKeyPresses = 0;
+    currentErrors = 0;
+    accuracy = 100.0;
+    wpm = 0.0;
+    totalCharactersTyped = 0;
+    keyPressHistory = [];
+    
+    notifyListeners();
+  }
+  
+  // Calculate words per minute
+  void _calculateWPM() {
+    // Standard calculation: 5 characters = 1 word (including spaces)
+    // WPM = (Characters typed / 5) / (time elapsed in minutes)
+    int elapsedTimeInSeconds = testDurationInSeconds - remainingTimeInSeconds;
+    double elapsedTimeInMinutes = elapsedTimeInSeconds / 60;
+    
+    if (elapsedTimeInMinutes > 0) {
+      // Count correctly typed characters only
+      int correctChars = 0;
+      for (int i = 0; i < typedText.length && i < practiceText.length; i++) {
+        if (typedText[i] == practiceText[i]) {
+          correctChars++;
+        }
+      }
+      
+      wpm = (correctChars / 5) / elapsedTimeInMinutes;
+    } else {
+      wpm = 0;
+    }
+  }
+  
+  // Calculate accuracy and error statistics
+  void _calculateStatistics() {
+    // Update current errors in the text
+    currentErrors = 0;
+    for (int i = 0; i < typedText.length && i < practiceText.length; i++) {
+      if (typedText[i] != practiceText[i]) {
+        currentErrors++;
+      }
+    }
+    
+    totalCharactersTyped = typedText.length;
+    
+    // Calculate accuracy based on total key presses history
+    if (totalKeyPresses > 0) {
+      accuracy = ((totalKeyPresses - errorKeyPresses) / totalKeyPresses) * 100;
+    } else {
+      accuracy = 100;
+    }
   }
 
   void toggleCapsLock() {
@@ -101,11 +221,60 @@ class ClavierProvider extends ChangeNotifier {
 
       if (keyPressed != null) {
         markKeyPressed(keyPressed);
-        if (keyPressed == "Space") typedText += " ";
-        else if (keyPressed == "Enter") typedText += "\n";
-        else if (keyPressed == "Tab") typedText += "\t";
-        else if (keyPressed == "⌫" && typedText.isNotEmpty) typedText = typedText.substring(0, typedText.length - 1);
-        else if (keyPressed.length == 1) typedText += keyPressed;
+        // Start the test on first keypress if not already started
+        if (!isTestActive && 
+            keyPressed != "Shift" && 
+            keyPressed != "Ctrl" && 
+            keyPressed != "Alt" && 
+            keyPressed != "Caps") {
+          startTest();
+        }
+        
+        if (isTestActive) {
+          // Ne pas compter les modificateurs dans les statistiques
+          if (keyPressed != "Shift" && 
+              keyPressed != "Ctrl" && 
+              keyPressed != "Alt" && 
+              keyPressed != "Caps") {
+            
+            // Vérifier si c'est une erreur avant de modifier le texte
+            bool isError = false;
+            
+            if (keyPressed == "⌫") {
+              // On ne compte pas le backspace comme une erreur
+              if (typedText.isNotEmpty) {
+                typedText = typedText.substring(0, typedText.length - 1);
+              }
+            } else {
+              String newChar = "";
+              if (keyPressed == "Space") newChar = " ";
+              else if (keyPressed == "Enter") newChar = "\n";
+              else if (keyPressed == "Tab") newChar = "\t";
+              else if (keyPressed.length == 1) newChar = keyPressed;
+              
+              // Vérifier si la frappe est correcte par rapport au texte à recopier
+              if (newChar.isNotEmpty && typedText.length < practiceText.length) {
+                isError = (newChar != practiceText[typedText.length]);
+                typedText += newChar;
+              }
+              
+              // Incrémenter le compteur de frappe
+              totalKeyPresses++;
+              
+              // Enregistrer si c'était une erreur
+              keyPressHistory.add(!isError);
+              
+              // Mettre à jour le compteur d'erreurs si nécessaire
+              if (isError) {
+                errorKeyPresses++;
+              }
+            }
+            
+            // Update statistics as user types
+            _calculateStatistics();
+          }
+        }
+        
         notifyListeners();
 
         Future.delayed(const Duration(milliseconds: 150), () => resetKey(keyPressed!));
